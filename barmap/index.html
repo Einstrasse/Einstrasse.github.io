@@ -1,14 +1,30 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-<meta content="origin-when-cross-origin" name="referrer">
-<title>서울 철봉 지도</title>
-<link rel="apple-touch-icon" sizes="200x200" href="https://navermaps.github.io/maps.js.ncp/docs/img/logo_200x200.png">
-<link rel="canonical" href="https://navermaps.github.io/maps.js.ncp">
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta content="origin-when-cross-origin" name="referrer">
+    <title>서울 철봉 지도</title>
+    <link rel="apple-touch-icon" sizes="200x200" href="https://navermaps.github.io/maps.js.ncp/docs/img/logo_200x200.png">
+    <link rel="canonical" href="https://navermaps.github.io/maps.js.ncp">
 
-<link rel="stylesheet" type="text/css" href="./main.css">
+    <link rel="stylesheet" type="text/css" href="./main.css">
+    <style>
+        .float{
+            position:fixed;
+            width:60px;
+            height:60px;
+            bottom:40px;
+            left:40px;
+            background-color:#0C9;
+            color:#FFF;
+            border-radius:50px;
+            text-align:center;
+            box-shadow: 2px 2px 3px #999;
+            font-size: 40px;
+            z-index: 100;
+        }
+    </style>
 </head>
 <body>
 <div id="wrap">
@@ -16,7 +32,7 @@
     <div id="header">
         <div class="inner_header">
             <h1>서울 철봉 지도</h1>
-            <button onclick="setCurrentPosition();">현재 위치 찾기</button>
+            <button onclick="setCurrentPosition();" class="float">+</button>
         </div>
     </div>
     <!-- //header -->
