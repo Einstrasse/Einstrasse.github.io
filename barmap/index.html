@@ -106,12 +106,11 @@
     function onSuccessGeolocation(position) {
         var location = new naver.maps.LatLng(position.coords.latitude,
                                              position.coords.longitude);
-
         map.setCenter(location); // 얻은 좌표를 지도의 중심으로 설정합니다.
         map.setZoom(15); // 지도의 줌 레벨을 변경합니다.
         var curPosInfoWindow = new naver.maps.InfoWindow();
 
-        curPosInfoWindow.setContent('<div style="padding:10px;">' + '현재 위치' + '</div>');
+        curPosInfoWindow.setContent(`<div style="padding:10px;"><b>현재 위치</b><br>${location.toString()}</div>`);
 
         curPosInfoWindow.open(map, location);
         console.log('Coordinates: ' + location.toString());
