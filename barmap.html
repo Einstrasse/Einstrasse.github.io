@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+<meta content="origin-when-cross-origin" name="referrer">
+<title>Bar map Seoul</title>
+<link rel="manifest" href="https://navermaps.github.io/map.js.ncp/manifest.json">
+<link rel="apple-touch-icon" sizes="200x200" href="https://navermaps.github.io/maps.js.ncp/docs/img/logo_200x200.png">
+<link rel="canonical" href="https://navermaps.github.io/maps.js.ncp">
+
+<link rel="stylesheet" type="text/css" href="./main.css">
+</head>
+<body>
+<div id="wrap">
+    <!-- header -->
+    <div id="header">
+        <div class="inner_header">
+            <h1>Bar finder</h1>
+        </div>
+    </div>
+    <!-- //header -->
+    <!-- container -->
+    <div id="container">
+        <div class="section">
+            <div class="inner_section interaction">
+                <div class="api_area">
+                    <div id="map" class="api_position"></div>
+                </div>
+                <div class="info_area">
+                    <p>부드럽고, 빠른 인터렉션, 데스크탑은 물론 모바일 환경까지 최적화된 인터랙션을 제공할 수 있습니다.</p>
+                </div>
+            </div>
+            <div class="inner_section panorama">
+                <div class="api_area">
+                    <div id="panorama" class="api_position"></div>
+                </div>
+                <div class="info_area">
+                    <p>360도 파노라마, 지정된 도로부터 국내 주요 장소까지 360도 파노라마를 쉽게 이용할 수 있습니다.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- footer -->
+    <div id="footer">
+        <div class="inner_footer">
+            <div class="footer_copright">
+            <a href="https://developers.naver.com" target="_blank">Einstrasse</a>
+            </div>
+        </div>
+    </div>
+    <!-- //footer -->
+</div>
+
+<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ef339sn8hq&submodules=panorama"></script>
+
+<script>
+	var mapOptions = {
+		center: new naver.maps.LatLng(37.48, 127.035),
+		zoom: 13
+	};
+	var map = new naver.maps.Map('map', mapOptions);
+	var barUnderJuamBridge = new naver.maps.Marker({
+		position: new naver.maps.LatLng(37.46, 127.02725),
+		map: map
+	});
+
+
+</script>
+<script type="text/javascript" src="https://wcs.naver.net/wcslog.js"></script>
+
+
+</body>
+</html>
+
