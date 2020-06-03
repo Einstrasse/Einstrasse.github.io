@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+<meta content="origin-when-cross-origin" name="referrer">
+<title>Bar map Seoul</title>
+<link rel="apple-touch-icon" sizes="200x200" href="https://navermaps.github.io/maps.js.ncp/docs/img/logo_200x200.png">
+<link rel="canonical" href="https://navermaps.github.io/maps.js.ncp">
+
+<link rel="stylesheet" type="text/css" href="./main.css">
+</head>
+<body>
+<div id="wrap">
+    <!-- header -->
+    <div id="header">
+        <div class="inner_header">
+            <h1>Bar finder</h1>
+        </div>
+    </div>
+    <!-- //header -->
+    <!-- container -->
+    <div id="container">
+        <div class="section">
+            <div class="inner_section interaction">
+                <div class="api_area">
+                    <div id="map" class="api_position"></div>
+                </div>
+            </div>
+            <div class="inner_section panorama">
+                <div class="api_area">
+                    <div id="panorama" class="api_position"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- footer -->
+    <div id="footer">
+        <div class="inner_footer">
+            <div class="footer_copright">
+            <a href="https://developers.naver.com" target="_blank">Einstrasse</a>
+            </div>
+        </div>
+    </div>
+    <!-- //footer -->
+</div>
+
+<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ef339sn8hq&submodules=panorama"></script>
+
+<script>
+
+    var HOME_PATH = window.HOME_PATH || '.';
+
+    var MarkerData = [
+        {
+            "pos": [37.46, 127.02725],
+            "img": "img/bar.jpeg",
+            "title": "juam bridge bar",
+            "detail": "Under the juam bridge near yangjae chun"
+        }, 
+        {
+            "pos": [37.46, 127.2825],
+            "title": "Test Data",
+            "detail": "Test Data Detail"
+        }
+    ]
+    var map = new naver.maps.Map('map', {
+        center: new naver.maps.LatLng(37.48, 127.035),
+        zoom: 13
+    });
+
+var bounds = map.getBounds(),
+    southWest = bounds.getSW(),
+    northEast = bounds.getNE(),
+    lngSpan = northEast.lng() - southWest.lng(),
+    latSpan = northEast.lat() - southWest.lat();
+
+var markers = [],
+    infoWindows = [];
+
+    for (var i in MarkerData) {
+        var data = MarkerData[i];
+        var position = new naver.maps.LatLng(data.pos[0], data.pos[1]);
+
+        var marker = new naver.maps.Marker({
+            map: map,
+            position: position,
+            title: data.title,
+            zIndex: 100
+        });
+
+        var infoWindow = new naver.maps.InfoWindow({
+            content: `<div style="width:250px;text-align:center;padding:10px;"><b>${data.title}</b><p>${data.detail}</p><br><img style="max-width:250px;max-height:250px;" src="${data.img}" alt="${data.title}"/></div>`
+        });
+
+        markers.push(marker);
+        infoWindows.push(infoWindow);
+    };
+
+    naver.maps.Event.addListener(map, 'idle', function() {
+        updateMarkers(map, markers);
+    });
+
+    function updateMarkers(map, markers) {
+
+        var mapBounds = map.getBounds();
+        var marker, position;
+
+        for (var i = 0; i < markers.length; i++) {
+
+            marker = markers[i]
+            position = marker.getPosition();
+
+            if (mapBounds.hasLatLng(position)) {
+                showMarker(map, marker);
+            } else {
+                hideMarker(map, marker);
+            }
+        }
+    }
+
+    function showMarker(map, marker) {
+
+        if (marker.setMap()) return;
+        marker.setMap(map);
+    }
+
+    function hideMarker(map, marker) {
+
+        if (!marker.setMap()) return;
+        marker.setMap(null);
+    }
+
+    // 해당 마커의 인덱스를 seq라는 클로저 변수로 저장하는 이벤트 핸들러를 반환합니다.
+    function getClickHandler(seq) {
+        return function(e) {
+            var marker = markers[seq],
+                infoWindow = infoWindows[seq];
+
+            if (infoWindow.getMap()) {
+                infoWindow.close();
+            } else {
+                infoWindow.open(map, marker);
+            }
+        }
+    }
+
+    for (var i=0, ii=markers.length; i<ii; i++) {
+        naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
+    }
+
+
+</script>
+<!-- <script type="text/javascript" src="https://wcs.naver.net/wcslog.js"></script> -->
+
+
+</body>
+</html>
+
