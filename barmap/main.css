@@ -112,7 +112,7 @@ textarea{resize:none}
 
 #footer .inner_footer{position:relative;width:1000px;height:70px;margin:0 auto;text-align:center}
 .inner_footer .footer_copright{overflow:hidden;width:510px;height:23px;margin:0 auto;padding-top:22px}
-.inner_footer .footer_copright>a{display:block;overflow:hidden;float:left;width:197px;height:23px;background:url(../img/main/footer_logo.png) no-repeat 0 0;font-size:0;line-height:0;vertical-align:top;margin-top:2px}
+.inner_footer .footer_copright>a{display:block;overflow:hidden;float:left;width:197px;height:23px;font-size:0;line-height:0;vertical-align:top;margin-top:2px}
 .inner_footer .footer_copright span{display:block;float:left;margin:8px 0 0 18px;font-size:13px;color:#999;vertical-align:top}
 .inner_footer .footer_copright span a{color:#999}
 
