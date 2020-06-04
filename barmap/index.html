@@ -4,25 +4,70 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <meta content="origin-when-cross-origin" name="referrer">
-    <title>서울 철봉 지도</title>
+    <title>철봉여지도</title>
     <link rel="apple-touch-icon" sizes="200x200" href="https://navermaps.github.io/maps.js.ncp/docs/img/logo_200x200.png">
     <link rel="canonical" href="https://navermaps.github.io/maps.js.ncp">
 
-    <link rel="stylesheet" type="text/css" href="./main.css">
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #wrap {
+            height: 100vh;
+        }
+        #header {
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 75px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 5px;
+            z-index: 101;
+        }
+        .inner_header h1 {
+            padding-left: 15px;
+        }
+        #container {
+            height: 100%;
+        }
+        .api_position {
+            width:100%;
+            min-height: 500px;
+            height: 100%;
+        }
+        #footer {
+            overflow: hidden;
+            position: fixed;
+            bottom: 0;
+            padding-top: 10px;
+            padding-left: 10px;
+            height: 35px;
+            width: 100%;
+            z-index: 100;
+            background-color: #fff;
+        }
+        a {
+            color: black;
+        }
+        a:link {
+            color: black;
+        }
         .float{
             position:fixed;
             width:60px;
             height:60px;
             bottom:40px;
-            left:40px;
+            right:40px;
             background-color:#0C9;
             color:#FFF;
             border-radius:50px;
             text-align:center;
             box-shadow: 2px 2px 3px #999;
             font-size: 40px;
-            z-index: 100;
+            z-index: 101;
         }
     </style>
 </head>
@@ -31,31 +76,20 @@
     <!-- header -->
     <div id="header">
         <div class="inner_header">
-            <h1>서울 철봉 지도</h1>
+            <h1>철봉여지도</h1>
             <button onclick="setCurrentPosition();" class="float">+</button>
         </div>
     </div>
     <!-- //header -->
     <!-- container -->
     <div id="container">
-        <div class="section">
-            <div class="inner_section interaction">
-                <div class="api_area">
-                    <div id="map" class="api_position"></div>
-                </div>
-            </div>
-            <!-- <div class="inner_section panorama">
-                <div class="api_area">
-                    <div id="panorama" class="api_position"></div>
-                </div>
-            </div> -->
-        </div>
+        <div id="map" class="api_position"></div>
     </div>
     <!-- footer -->
     <div id="footer">
         <div class="inner_footer">
             <div class="footer_copright">
-            <a href="https://eine.tistory.com" target="_blank">Einstrasse</a>
+            Author: <a href="https://eine.tistory.com" target="_blank">Einstrasse</a>
             </div>
         </div>
     </div>
@@ -107,7 +141,7 @@
         var location = new naver.maps.LatLng(position.coords.latitude,
                                              position.coords.longitude);
         map.setCenter(location); // 얻은 좌표를 지도의 중심으로 설정합니다.
-        map.setZoom(15); // 지도의 줌 레벨을 변경합니다.
+        //map.setZoom(15); // 지도의 줌 레벨을 변경합니다.
         var curPosInfoWindow = new naver.maps.InfoWindow();
 
         curPosInfoWindow.setContent(`<div style="padding:10px;"><b>현재 위치</b><br>${location.toString()}</div>`);
