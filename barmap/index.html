@@ -122,6 +122,12 @@
             "title": "영동1교 하부 철봉",
             "img": "img/bar3.jpg",
             "detail": "영동 1교 하부에 있는 철봉"
+        },
+        {
+            "pos": [37.5275562, 127.1137921],
+            "title": "풍납 마을 마당 공원",
+            "img": "img/bar4.jpg",
+            "detail": "서울 송파구 풍납동 풍납 마을 마당 공원의 3단 철봉"
         }
     ]
     var map = new naver.maps.Map('map', {
@@ -191,7 +197,7 @@
         });
 
         var infoWindow = new naver.maps.InfoWindow({
-            content: `<div style="width:250px;text-align:center;padding:10px;"><b>${data.title}</b><p>${data.detail}</p><br><img style="max-width:250px;max-height:250px;" src="${data.img}" alt="${data.title}"/></div>`
+            content: `<div style="width:200px;text-align:center;padding:5px;"><b>${data.title}</b><p>${data.detail}</p><br><img style="max-width:200px;max-height:200px;" src="${data.img}" alt="${data.title}"/></div>`
         });
 
         markers.push(marker);
