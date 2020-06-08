@@ -74,11 +74,11 @@
 </head>
 <body>
 <div id="wrap">
+    <button onclick="setCurrentPosition();" class="float">+</button>
     <!-- header -->
     <div id="header">
         <div class="inner_header">
             <h1>철봉여지도</h1>
-            <button onclick="setCurrentPosition();" class="float">+</button>
         </div>
     </div>
     <!-- //header -->
@@ -90,7 +90,7 @@
     <div id="footer">
         <div class="inner_footer">
             <div class="footer_copright">
-            Author: <a href="https://eine.tistory.com" target="_blank">Einstrasse</a> <br />철봉 제보 📧<a href="mailto:hg9587@naver.com">hg9587@naver.com</a><br /> [위도, 경도, 사진, 간단 설명]
+            Author: <a href="https://eine.tistory.com" target="_blank">Einstrasse</a> / Issue Report: <a href="https://github.com/Einstrasse/einstrasse.github.io/issues">Click Here!</a> <br />철봉 제보 📧<a href="mailto:hg9587@naver.com">hg9587@naver.com</a><br /> [위도, 경도, 사진, 간단 설명]
             </div>
         </div>
     </div>
@@ -174,8 +174,10 @@
              * chrome.exe --unsafely-treat-insecure-origin-as-secure="http://example.com"
              */
             navigator.geolocation.getCurrentPosition(onSuccessGeolocation, onErrorGeolocation);
+
         } else {
             console.log("Geolocation이 지원되지 않습니다.");
+            alert("Cannot get current position");
             // var center = map.getCenter();
             // infowindow.setContent('<div style="padding:20px;"><h5 style="margin-bottom:5px;color:#f00;">Geolocation not supported</h5></div>');
             // infowindow.open(map, center);
