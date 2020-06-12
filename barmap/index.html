@@ -76,6 +76,15 @@
             font-size: 40px;
             z-index: 101;
         }
+        .bar-img {
+            max-width: 225px;
+            max-height: 275px;
+        }
+        .infowindow {
+            width: 225px;
+            text-align: center;
+            padding: 5px;
+        }
     </style>
 </head>
 <body>
@@ -158,6 +167,12 @@
             "title": "바우뫼공원 평행봉과 철봉",
             "img": "img/bar8.jpg",
             "detail": "양재 바우뫼공원 계단으로 올라가면있는 평행봉과 3단 철봉"
+        }, 
+        {
+           "pos": [37.4661715, 127.01999943],
+            "title": "성형촌어린이공원",
+            "img": "img/bar9.jpg",
+            "detail": "성형촌어린이공원의 평행봉과 3단철봉" 
         }
     ]
     let map = new naver.maps.Map('map', {
@@ -233,7 +248,7 @@
         });
 
         let infoWindow = new naver.maps.InfoWindow({
-            content: `<div style="width:200px;text-align:center;padding:5px;"><b>${data.title}</b><p>${data.detail}</p><br><img style="max-width:200px;max-height:200px;" src="${data.img}" alt="${data.title}"/></div>`
+            content: `<div class="infowindow"><b>${data.title}</b><p>${data.detail}</p><br><img class="bar-img" src="${data.img}" alt="${data.title}"/></div>`
         });
 
         markers.push(marker);
