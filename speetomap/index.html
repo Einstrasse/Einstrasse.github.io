@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"> -->
@@ -7,16 +8,17 @@
 
     <meta content="origin-when-cross-origin" name="referrer">
     <title>스피또여지도</title>
-    <link rel="apple-touch-icon" sizes="200x200" href="https://navermaps.github.io/maps.js.ncp/docs/img/logo_200x200.png">
+    <link rel="apple-touch-icon" sizes="200x200"
+        href="https://navermaps.github.io/maps.js.ncp/docs/img/logo_200x200.png">
     <link rel="canonical" href="https://navermaps.github.io/maps.js.ncp">
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-169641735-1"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-      gtag('config', 'UA-169641735-1');
+        gtag('config', 'UA-169641735-1');
     </script>
 
 
@@ -25,13 +27,16 @@
             -ms-content-zooming: none;
             -ms-touch-action: pan-x pan-y;
         }
+
         body {
             margin: 0;
             padding: 0;
         }
+
         #wrap {
             height: 100vh;
         }
+
         #header {
             overflow: hidden;
             position: fixed;
@@ -43,17 +48,21 @@
             border-radius: 5px;
             z-index: 101;
         }
+
         .inner_header h1 {
             padding-left: 15px;
         }
+
         #container {
             height: 100%;
         }
+
         .api_position {
-            width:100%;
+            width: 100%;
             min-height: 500px;
             height: 100%;
         }
+
         #footer {
             overflow: hidden;
             position: fixed;
@@ -66,241 +75,324 @@
             background-color: #fff;
             font-size: 15px;
         }
+
         a {
             color: black;
         }
+
         a:link {
             color: black;
         }
+
         .upper-float {
-            position:fixed;
-            width:60px;
-            height:60px;
-            top:40px;
-            right:40px;
-            background-color:rgb(57, 155, 235);
-            color:#FFF;
-            border-radius:50px;
-            text-align:center;
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            top: 40px;
+            right: 40px;
+            background-color: rgb(57, 155, 235);
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
             box-shadow: 2px 2px 3px #999;
             font-size: 13px;
             z-index: 102;
         }
-        .float{
-            position:fixed;
-            width:60px;
-            height:60px;
-            bottom:20px;
-            right:40px;
-            background-color:#0C9;
-            color:#FFF;
-            border-radius:50px;
-            text-align:center;
+
+        .float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 20px;
+            right: 40px;
+            background-color: #0C9;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
             box-shadow: 2px 2px 3px #999;
             font-size: 40px;
             z-index: 101;
         }
+
         .infowindow {
             width: 225px;
             text-align: center;
             padding: 5px;
         }
+
+        .spinner-container {
+            background-color: rgb(57, 64, 62);
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 103;
+            opacity: 0.7;
+        }
+
+        .loader,
+        .loader:after {
+            border-radius: 50%;
+            width: 10em;
+            height: 10em;
+        }
+
+        .loader {
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 103;
+            margin: auto;
+            position: absolute;
+            font-size: 10px;
+            text-indent: -9999em;
+            border-top: 1.1em solid rgba(255, 255, 255, 0.2);
+            border-right: 1.1em solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1.1em solid rgba(255, 255, 255, 0.2);
+            border-left: 1.1em solid #ffffff;
+            -webkit-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-animation: load8 1.1s infinite linear;
+            animation: load8 1.1s infinite linear;
+        }
+
+        @-webkit-keyframes load8 {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes load8 {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
+
 <body>
-<div id="wrap">
-    <button onclick="updateMarkers(map, markers);" class="upper-float">Refresh</button>
-    <button onclick="setCurrentPosition();" class="float">+</button>
-    <!-- header -->
-    <div id="header">
-        <div class="inner_header">
-            <h1>스피또여지도</h1>
+    <div id="spinner" class="spinner-container">
+        <div class="loader">
+            Loading...
         </div>
     </div>
-    <!-- //header -->
-    <!-- container -->
-    <div id="container">
-        <div id="map" class="api_position"></div>
-    </div>
-    <!-- footer -->
-    <div id="footer">
-        <div class="inner_footer">
-            <div class="footer_copright">
-            Author: <a href="https://eine.tistory.com/entry/%ED%8F%89%ED%96%89%EB%B4%89-%EB%B0%8F-%EC%B2%A0%EB%B4%89-%EC%A7%80%EB%8F%84-%EA%B0%9C%EB%B0%9C%EA%B8%B0" target="_blank">Einstrasse</a> / Issue Report: <a href="https://github.com/Einstrasse/einstrasse.github.io/issues">Click Here!</a>
+    <div id="wrap">
+        <button onclick="updateMarkers(map, markers);" class="upper-float">Refresh</button>
+        <button onclick="setCurrentPosition();" class="float">+</button>
+        <!-- header -->
+        <div id="header">
+            <div class="inner_header">
+                <h1>스피또여지도</h1>
             </div>
         </div>
+        <!-- //header -->
+        <!-- container -->
+        <div id="container">
+            <div id="map" class="api_position"></div>
+        </div>
+        <!-- footer -->
+        <div id="footer">
+            <div class="inner_footer">
+                <div class="footer_copright">
+                    Author: <a
+                        href="https://eine.tistory.com/entry/%ED%8F%89%ED%96%89%EB%B4%89-%EB%B0%8F-%EC%B2%A0%EB%B4%89-%EC%A7%80%EB%8F%84-%EA%B0%9C%EB%B0%9C%EA%B8%B0"
+                        target="_blank">Einstrasse</a> / Issue Report: <a
+                        href="https://github.com/Einstrasse/einstrasse.github.io/issues">Click Here!</a>
+                </div>
+            </div>
+        </div>
+        <!-- //footer -->
     </div>
-    <!-- //footer -->
-</div>
 
-<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ef339sn8hq&submodules=panorama"></script>
+    <script type="text/javascript"
+        src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ef339sn8hq&submodules=panorama"></script>
 
-<script>
+    <script>
 
-    let HOME_PATH = window.HOME_PATH || '.';
-    
-    let map = new naver.maps.Map('map', {
-        center: new naver.maps.LatLng(37.48, 127.035),
-        zoom: 13
-    });
+        let HOME_PATH = window.HOME_PATH || '.';
 
-    let bounds = map.getBounds(),
-        southWest = bounds.getSW(),
-        northEast = bounds.getNE(),
-        lngSpan = northEast.lng() - southWest.lng(),
-        latSpan = northEast.lat() - southWest.lat();
-
-    let markers = [],
-        infoWindows = [];
-    let openedInfoWindow = null;
-
-    let curPosInfoWindow = new naver.maps.InfoWindow();
-
-    function onSuccessGeolocation(position) {
-        let location = new naver.maps.LatLng(position.coords.latitude,
-                                             position.coords.longitude);
-        map.setCenter(location); // 얻은 좌표를 지도의 중심으로 설정합니다.
-        //map.setZoom(15); // 지도의 줌 레벨을 변경합니다.
-        if (curPosInfoWindow.getMap()) {
-            curPosInfoWindow.close();
-        }
-        curPosInfoWindow.setContent(`<div style="padding:10px;"><b>현재 위치</b><br>${location.toString()}</div>`);
-
-        curPosInfoWindow.open(map, location);
-        console.log('Coordinates: ' + location.toString());
-    }
-
-    function onErrorGeolocation() {
-        // let center = map.getCenter();
-
-        // infowindow.setContent('<div style="padding:20px;">' +
-        //     '<h5 style="margin-bottom:5px;color:#f00;">Geolocation failed!</h5>'+ "latitude: "+ center.lat() +"<br />longitude: "+ center.lng() +'</div>');
-
-        // infowindow.open(map, center);
-    }
-
-    let setCurrentPosition = function() {
-        if (navigator.geolocation) {
-            /**
-             * navigator.geolocation 은 Chrome 50 버젼 이후로 HTTP 환경에서 사용이 Deprecate 되어 HTTPS 환경에서만 사용 가능 합니다.
-             * http://localhost 에서는 사용이 가능하며, 테스트 목적으로, Chrome 의 바로가기를 만들어서 아래와 같이 설정하면 접속은 가능합니다.
-             * chrome.exe --unsafely-treat-insecure-origin-as-secure="http://example.com"
-             */
-            navigator.geolocation.getCurrentPosition(onSuccessGeolocation, onErrorGeolocation);
-
-        } else {
-            console.log("Geolocation이 지원되지 않습니다.");
-            alert("Cannot get current position");
-            // let center = map.getCenter();
-            // infowindow.setContent('<div style="padding:20px;"><h5 style="margin-bottom:5px;color:#f00;">Geolocation not supported</h5></div>');
-            // infowindow.open(map, center);
-        }
-    };
-    document.addEventListener("DOMContentLoaded", setCurrentPosition);
-
-    
-    fetch("./speeto-map.json").then(data => data.json()).then(MarkerData => {
-        for (let i in MarkerData) {
-            let data = MarkerData[i];
-            let position = new naver.maps.LatLng(data.pos[0], data.pos[1]);
-    
-            let marker = new naver.maps.Marker({
-                map: map,
-                position: position,
-                title: data.title,
-                zIndex: 100
-            });
-            
-            let sell_items = [];
-            if (data.speeto500 === "Y") sell_items.push("<li>스피또500</li>");
-            if (data.speeto1000 === "Y") sell_items.push("<li>스피또1000</li>");
-            if (data.speeto2000 === "Y") sell_items.push("<li>스피또2000</li>");
-            if (data.annuity === "Y") sell_items.push("<li>연금복권</li>");
-            let infoWindow = new naver.maps.InfoWindow({
-                content: 
-                    `<div class="infowindow">` +
-                        `<b>${data.title}</b>` + 
-                        `<p>주소: ${data.addr}</p>` + 
-                        `<ul>${sell_items.join("")}</ul>` +
-                    `</div>`
-            });
-    
-            markers.push(marker);
-            infoWindows.push(infoWindow);
-        };
-
-        for (let i=0, ii=markers.length; i<ii; i++) {
-            naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
-        }
-
-        naver.maps.Event.addListener(map, 'click', function() {
-            curPosInfoWindow.close();
-            if (openedInfoWindow && openedInfoWindow.getMap()) {
-                openedInfoWindow.close();
-            }
+        let map = new naver.maps.Map('map', {
+            center: new naver.maps.LatLng(37.48, 127.035),
+            zoom: 15
         });
 
-        updateMarkers(map, markers);
+        let bounds = map.getBounds(),
+            southWest = bounds.getSW(),
+            northEast = bounds.getNE(),
+            lngSpan = northEast.lng() - southWest.lng(),
+            latSpan = northEast.lat() - southWest.lat();
 
-    });
+        let markers = [],
+            infoWindows = [];
+        let openedInfoWindow = null;
 
-    // naver.maps.Event.addListener(map, 'idle', function() {
-    //     updateMarkers(map, markers);
-    // });
+        let curPosInfoWindow = new naver.maps.InfoWindow();
 
-    function updateMarkers(map, markers) {
+        function onSuccessGeolocation(position) {
+            let location = new naver.maps.LatLng(position.coords.latitude,
+                position.coords.longitude);
+            map.setCenter(location); // 얻은 좌표를 지도의 중심으로 설정합니다.
+            //map.setZoom(15); // 지도의 줌 레벨을 변경합니다.
+            if (curPosInfoWindow.getMap()) {
+                curPosInfoWindow.close();
+            }
+            curPosInfoWindow.setContent(`<div style="padding:10px;"><b>현재 위치</b><br>${location.toString()}</div>`);
 
-        let mapBounds = map.getBounds();
-        let marker, position;
+            curPosInfoWindow.open(map, location);
+            console.log('Coordinates: ' + location.toString());
+        }
 
-        for (let i = 0; i < markers.length; i++) {
+        function onErrorGeolocation() {
+            // let center = map.getCenter();
 
-            marker = markers[i]
-            position = marker.getPosition();
+            // infowindow.setContent('<div style="padding:20px;">' +
+            //     '<h5 style="margin-bottom:5px;color:#f00;">Geolocation failed!</h5>'+ "latitude: "+ center.lat() +"<br />longitude: "+ center.lng() +'</div>');
 
-            if (mapBounds.hasLatLng(position)) {
-                showMarker(map, marker);
+            // infowindow.open(map, center);
+        }
+
+        let setCurrentPosition = function () {
+            if (navigator.geolocation) {
+                /**
+                 * navigator.geolocation 은 Chrome 50 버젼 이후로 HTTP 환경에서 사용이 Deprecate 되어 HTTPS 환경에서만 사용 가능 합니다.
+                 * http://localhost 에서는 사용이 가능하며, 테스트 목적으로, Chrome 의 바로가기를 만들어서 아래와 같이 설정하면 접속은 가능합니다.
+                 * chrome.exe --unsafely-treat-insecure-origin-as-secure="http://example.com"
+                 */
+                navigator.geolocation.getCurrentPosition(onSuccessGeolocation, onErrorGeolocation);
+
             } else {
-                hideMarker(map, marker);
+                console.log("Geolocation이 지원되지 않습니다.");
+                alert("Cannot get current position");
+                // let center = map.getCenter();
+                // infowindow.setContent('<div style="padding:20px;"><h5 style="margin-bottom:5px;color:#f00;">Geolocation not supported</h5></div>');
+                // infowindow.open(map, center);
+            }
+        };
+        document.addEventListener("DOMContentLoaded", setCurrentPosition);
+
+
+        fetch("./speeto-map.json").then(data => data.json()).then(MarkerData => {
+            for (let i in MarkerData) {
+                // console.log(`Progress ${i}/${MarkerData.length} ${new Date()}`);
+                let data = MarkerData[i];
+                let position = new naver.maps.LatLng(data.pos[0], data.pos[1]);
+
+                let marker = new naver.maps.Marker({
+                    map: map,
+                    position: position,
+                    title: data.title,
+                    zIndex: 100
+                });
+
+                let sell_items = [];
+                if (data.speeto500 === "Y") sell_items.push("<li>스피또500</li>");
+                if (data.speeto1000 === "Y") sell_items.push("<li>스피또1000</li>");
+                if (data.speeto2000 === "Y") sell_items.push("<li>스피또2000</li>");
+                if (data.annuity === "Y") sell_items.push("<li>연금복권</li>");
+                let infoWindow = new naver.maps.InfoWindow({
+                    content:
+                        `<div class="infowindow">` +
+                        `<b>${data.title}</b>` +
+                        `<p>주소: ${data.addr}</p>` +
+                        `<ul>${sell_items.join("")}</ul>` +
+                        `</div>`
+                });
+
+                markers.push(marker);
+                infoWindows.push(infoWindow);
+            };
+
+            for (let i = 0, ii = markers.length; i < ii; i++) {
+                // console.log(`Progress ${i}/${ii} ${new Date()}`);
+                naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
+            }
+
+            naver.maps.Event.addListener(map, 'click', function () {
+                curPosInfoWindow.close();
+                if (openedInfoWindow && openedInfoWindow.getMap()) {
+                    openedInfoWindow.close();
+                }
+            });
+
+            updateMarkers(map, markers);
+
+        });
+
+        // naver.maps.Event.addListener(map, 'idle', function() {
+        //     updateMarkers(map, markers);
+        // });
+
+        function updateMarkers(map, markers) {
+            console.log("Loader!")
+            let spinner = document.getElementById('spinner');
+            spinner.style.visibility = 'visible';
+
+            let mapBounds = map.getBounds();
+            let marker, position;
+
+            for (let i = 0; i < markers.length; i++) {
+                // console.log(`Progress3 ${i}/${markers.length} ${new Date()}`);
+                marker = markers[i]
+                position = marker.getPosition();
+
+                if (mapBounds.hasLatLng(position)) {
+                    showMarker(map, marker);
+                } else {
+                    hideMarker(map, marker);
+                }
+            }
+            console.log("Unloader!");
+            spinner.style.visibility = 'hidden';
+        }
+
+        function showMarker(map, marker) {
+
+            if (marker.setMap()) return;
+            marker.setMap(map);
+        }
+
+        function hideMarker(map, marker) {
+
+            if (!marker.setMap()) return;
+            marker.setMap(null);
+        }
+
+        // 해당 마커의 인덱스를 seq라는 클로저 변수로 저장하는 이벤트 핸들러를 반환합니다.
+        function getClickHandler(seq) {
+            return function (e) {
+                let marker = markers[seq],
+                    infoWindow = infoWindows[seq];
+
+                if (infoWindow.getMap()) {
+                    infoWindow.close();
+                } else {
+                    openedInfoWindow = infoWindow;
+                    infoWindow.open(map, marker);
+                }
             }
         }
-    }
-
-    function showMarker(map, marker) {
-
-        if (marker.setMap()) return;
-        marker.setMap(map);
-    }
-
-    function hideMarker(map, marker) {
-
-        if (!marker.setMap()) return;
-        marker.setMap(null);
-    }
-
-    // 해당 마커의 인덱스를 seq라는 클로저 변수로 저장하는 이벤트 핸들러를 반환합니다.
-    function getClickHandler(seq) {
-        return function(e) {
-            let marker = markers[seq],
-                infoWindow = infoWindows[seq];
-
-            if (infoWindow.getMap()) {
-                infoWindow.close();
-            } else {
-                openedInfoWindow = infoWindow;
-                infoWindow.open(map, marker);
-            }
-        }
-    }
 
 
-    
 
 
-</script>
-<!-- <script type="text/javascript" src="https://wcs.naver.net/wcslog.js"></script> -->
+
+    </script>
+    <!-- <script type="text/javascript" src="https://wcs.naver.net/wcslog.js"></script> -->
 
 
 </body>
-</html>
 
+</html>
