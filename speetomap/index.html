@@ -284,41 +284,15 @@
         document.addEventListener("DOMContentLoaded", setCurrentPosition);
 
 
+        console.log("Loader!")
+        let spinner = document.getElementById('spinner');
+        spinner.style.visibility = 'visible';
+        let rawMarkerData = [];
         fetch("./speeto-map.json").then(data => data.json()).then(MarkerData => {
-            for (let i in MarkerData) {
-                // console.log(`Progress ${i}/${MarkerData.length} ${new Date()}`);
-                let data = MarkerData[i];
-                let position = new naver.maps.LatLng(data.pos[0], data.pos[1]);
-
-                let marker = new naver.maps.Marker({
-                    map: map,
-                    position: position,
-                    title: data.title,
-                    zIndex: 100
-                });
-
-                let sell_items = [];
-                if (data.speeto500 === "Y") sell_items.push("<li>스피또500</li>");
-                if (data.speeto1000 === "Y") sell_items.push("<li>스피또1000</li>");
-                if (data.speeto2000 === "Y") sell_items.push("<li>스피또2000</li>");
-                if (data.annuity === "Y") sell_items.push("<li>연금복권</li>");
-                let infoWindow = new naver.maps.InfoWindow({
-                    content:
-                        `<div class="infowindow">` +
-                        `<b>${data.title}</b>` +
-                        `<p>주소: ${data.addr}</p>` +
-                        `<ul>${sell_items.join("")}</ul>` +
-                        `</div>`
-                });
-
-                markers.push(marker);
-                infoWindows.push(infoWindow);
-            };
-
-            for (let i = 0, ii = markers.length; i < ii; i++) {
-                // console.log(`Progress ${i}/${ii} ${new Date()}`);
-                naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
-            }
+            rawMarkerData = MarkerData.map(item => {
+                item.position = new naver.maps.LatLng(item.pos[0], item.pos[1]);
+                return item;
+            });
 
             naver.maps.Event.addListener(map, 'click', function () {
                 curPosInfoWindow.close();
@@ -327,35 +301,102 @@
                 }
             });
 
-            updateMarkers(map, markers);
-
-        });
-
-        // naver.maps.Event.addListener(map, 'idle', function() {
-        //     updateMarkers(map, markers);
-        // });
-
-        function updateMarkers(map, markers) {
-            console.log("Loader!")
-            let spinner = document.getElementById('spinner');
-            spinner.style.visibility = 'visible';
-
-            let mapBounds = map.getBounds();
-            let marker, position;
-
-            for (let i = 0; i < markers.length; i++) {
-                // console.log(`Progress3 ${i}/${markers.length} ${new Date()}`);
-                marker = markers[i]
-                position = marker.getPosition();
-
-                if (mapBounds.hasLatLng(position)) {
-                    showMarker(map, marker);
-                } else {
-                    hideMarker(map, marker);
-                }
-            }
             console.log("Unloader!");
             spinner.style.visibility = 'hidden';
+            setTimeout(() => {
+                updateMarkers(map, markers);
+            }, 0);
+        });
+
+
+        //update markers when map dragging some other place
+        naver.maps.Event.addListener(map, 'idle', function() {
+            // updateMarkers(map, markers);
+        });
+
+        function processMarker(data, markers, infoWindows) {
+            let marker = new naver.maps.Marker({
+                map: map,
+                position: data.position,
+                title: data.title,
+                zIndex: 100
+            });
+            let sell_items = [];
+            if (data.speeto500 === "Y") sell_items.push("<li>스피또500</li>");
+            if (data.speeto1000 === "Y") sell_items.push("<li>스피또1000</li>");
+            if (data.speeto2000 === "Y") sell_items.push("<li>스피또2000</li>");
+            if (data.annuity === "Y") sell_items.push("<li>연금복권</li>");
+            let infoWindow = new naver.maps.InfoWindow({
+                content:
+                    `<div class="infowindow">` +
+                    `<b>${data.title}</b>` +
+                    `<p>주소: ${data.addr}</p>` +
+                    `<ul>${sell_items.join("")}</ul>` +
+                    `</div>`
+            });
+
+            let retIndex = markers.length;
+            markers.push(marker);
+            infoWindows.push(infoWindow);
+            return retIndex;
+        }
+
+        function updateMarkers(map, markers) {
+            let perf_checker = 0;
+
+            let ts0 = new Date().getTime();
+            let ts1, ts2;
+
+            let spinner = document.getElementById('spinner');
+            spinner.style.visibility = 'visible';
+            console.log("Loader!", spinner.style.visibility)
+            
+            setTimeout(() => {
+
+                let mapBounds = map.getBounds();
+    
+    
+                for (item of rawMarkerData) {
+                    if (item.processed) continue;
+                    if (mapBounds.hasLatLng(item.position)) {
+                        let markerIndex = processMarker(item, markers, infoWindows);
+                        item.processed = true;
+                        naver.maps.Event.addListener(markers[markerIndex], 'click', getClickHandler(markerIndex));
+                    }
+                }
+    
+                ts1 = new Date().getTime();
+                console.log(`updateMarkers - preprocess raw data ${ts1-ts0}ms / ${rawMarkerData.length} EA`);
+    
+    
+                rawMarkerData = rawMarkerData.filter(item => !item.processed);
+                
+                ts2 = new Date().getTime();
+                console.log(`updateMarkers - collapse raw data ${ts2-ts1}ms / ${rawMarkerData.length} EA`);
+    
+                let marker, position;
+    
+                for (let i = 0; i < markers.length; i++) {
+                    marker = markers[i]
+                    position = marker.getPosition();
+                    
+                    let check = mapBounds.hasLatLng(position);
+                    
+                    
+                    if (check) {
+                        showMarker(map, marker);
+                    } else {
+                        hideMarker(map, marker);
+                    }
+                }
+                console.log("Unloader!");
+                spinner.style.visibility = 'hidden';
+                let ts3 = new Date().getTime();
+                console.log(`updateMarkers - hide and show items ${ts3-ts2}ms / ${markers.length} EA`);
+            }, 1);
+
+
+
         }
 
         function showMarker(map, marker) {
